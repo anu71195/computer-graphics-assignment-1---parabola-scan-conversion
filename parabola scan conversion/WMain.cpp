@@ -3,7 +3,7 @@
 
 extern LRESULT CALLBACK WindowF (HWND,UINT,WPARAM,LPARAM);
 char szWinName[] = "MyWin";
-char szTitle[] = "Ellipse Drawing";
+char szTitle[] = "Parabola Drawing";
 
 int WINAPI WinMain (HINSTANCE hThisInst, HINSTANCE hPrevInst,
                     LPSTR lpszArgs, int nWinMode)
@@ -18,8 +18,8 @@ int WINAPI WinMain (HINSTANCE hThisInst, HINSTANCE hPrevInst,
   wcl.cbWndExtra = 0;//extra bytes
   wcl.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
   wcl.hCursor = LoadCursor(NULL,IDC_ARROW);
-  wcl.hIn(NULL,IDI_WINLOGO);
-  wcl.hIconSm = NULL;con = LoadIco
+  wcl.hIcon = LoadIcon(NULL,IDI_WINLOGO);
+  wcl.hIconSm = NULL;
   wcl.hInstance = hThisInst;
   wcl.lpfnWndProc = WindowF;
   wcl.lpszClassName = szWinName;

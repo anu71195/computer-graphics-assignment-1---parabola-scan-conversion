@@ -3,7 +3,7 @@
 
 extern LRESULT CALLBACK WindowF (HWND,UINT,WPARAM,LPARAM);
 char szWinName[] = "MyWin";
-char szTitle[] = "Ellipse Drawing";
+char szTitle[] = "Parabola Drawing";
 
 int WINAPI WinMain (HINSTANCE hThisInst, HINSTANCE hPrevInst,
                     LPSTR lpszArgs, int nWinMode)

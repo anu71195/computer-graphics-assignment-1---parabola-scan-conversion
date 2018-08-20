@@ -88,9 +88,9 @@ void plot_sympoint(int ex, int ey, COLORREF clr)
   int cx = gDrawData.centre.x;
   int cy = gDrawData.centre.y;
 
-  SetPixel(gDrawData.hdcMem, ex+cx,cy-ey, clr);
-  SetPixel(gDrawData.hdcMem, -ex+cx,cy-ey, clr);
-  SetPixel(gDrawData.hdcMem, -ex+cx,cy+ey, clr);
+//  SetPixel(gDrawData.hdcMem, ex+cx,cy-ey, clr);
+//  SetPixel(gDrawData.hdcMem, -ex+cx,cy-ey, clr);
+//  SetPixel(gDrawData.hdcMem, -ex+cx,cy+ey, clr);
   SetPixel(gDrawData.hdcMem, ex+cx,cy+ey, clr);
 }
 
@@ -156,53 +156,27 @@ void processCommand(int cmd, HWND hwnd)
       break;
   }
 }
-
-void drawEllipse(int ma,int mb)
+void drawEllipse(int c,int range)
 {
-  int x,y;
-  x=0;
-  y=mb;
-  plot_sympoint(x,y, RGB(0,0,0));
-
-  double d=(mb*mb)-(ma*ma*mb)+(ma*ma/4);
-  while((ma*ma*(y-(1/2)))>(mb*mb*(x+1)))  
-  {
-    /* in region 1*/
-    if(d<0)
-    {
-      /*choose E*/
-      d=d+(mb*mb*(2*x+3));
-      x=x+1;
-    }
-    else                              
-    {
-      /*choose SE*/
-      d=d+(mb*mb*(2*x+3))+(ma*ma*(2-2*y));
-      x=x+1;
-      y=y-1;
-    }
-    plot_sympoint(x,y, RGB(0,0,0));
-  }
-  d=(mb*mb*(x+(1/2))*(x+1/2))
-    +ma*ma*(y-1)*(y-1)-(ma*ma*mb*mb);
-  while(y>0)   
-  {
-    /*in region 2*/
-    if(d<0)
-    {
-      /*choose SE*/
-      d=d+mb*mb*(2*x+2)+ma*ma*(3-2*y);
-      x=x+1;
-      y=y-1;
-    }
-    else
-    {
-      /*choose S*/
-      d=d+ma*ma*(3-2*y);
-      y=y-1;
-    }
-    plot_sympoint(x,y, RGB(0,0,0));
-  }
+	int x,y;
+	x=0,y=0;
+	double d=1/4;
+	plot_sympoint(x,y,RGB(0,0,0));
+	while(y<range)
+	{
+		if(d<0)
+		{
+			y++;x++;
+			d=d+2*y+1;
+		}
+		else
+		{
+			x++;
+			d=d-1;
+		}
+		plot_sympoint(x,y,RGB(0,0,0));
+		plot_sympoint(x,-y,RGB(0,0,0));
+	}
 }
 
 LRESULT CALLBACK DlgAxis(HWND hdlg,UINT mess,WPARAM more,LPARAM pos)
@@ -218,10 +192,10 @@ LRESULT CALLBACK DlgAxis(HWND hdlg,UINT mess,WPARAM more,LPARAM pos)
           gDrawData.iMajorDiameter=(long int)(atof(str))/2;
           GetDlgItemText(hdlg,ID_EB2,str,20);
           gDrawData.iMinorDiameter=(long int)(atof(str))/2;
-          if(gDrawData.iMajorDiameter < 5 || 
-             gDrawData.iMajorDiameter > 700 ||
-             gDrawData.iMinorDiameter < 5 || 
-             gDrawData.iMinorDiameter > 400)
+          if(gDrawData.iMajorDiameter < -100000 || 
+             gDrawData.iMajorDiameter > 100000 ||
+             gDrawData.iMinorDiameter < -100000 || 
+             gDrawData.iMinorDiameter > 100000)
           {
             MessageBox(hdlg,
               "Diameter should be between 5 and 400.", 
